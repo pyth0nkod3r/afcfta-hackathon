@@ -4,10 +4,10 @@
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <title>AFCFTA Digital Trade Protocol Hackathon 2025</title>
+    <title>Evente - Conference and Event HTML Template</title>
     <meta
       name="description"
-      content="Join the AFCFTA Digital Trade Protocol Hackathon at the Science of Trade Conference 2025. Compete for N20 million in prizes and help shape the future of digital trade in Africa."
+      content="Evente - Conference and Event HTML Template"
     />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -120,7 +120,7 @@
     <!-- header-search-end -->
 
     <!-- cart mini area start -->
-    <!-- <div class="cartmini__area">
+    <div class="cartmini__area">
       <div class="cartmini__wrapper d-flex justify-content-between flex-column">
         <div class="cartmini__top-wrapper">
           <div class="cartmini__top p-relative">
@@ -170,6 +170,7 @@
               </button>
             </div>
           </div>
+          <!-- for wp -->
         </div>
         <div class="cartmini__checkout">
           <div class="cartmini__checkout-title mb-30">
@@ -186,8 +187,8 @@
           </div>
         </div>
       </div>
-    </div> -->
-    <!-- <div class="body-overlay"></div> -->
+    </div>
+    <div class="body-overlay"></div>
     <!-- cart mini area end -->
 
     <!-- header-area -->
@@ -225,8 +226,8 @@
                           <li class="active">
                             <a href="index.html">Home One</a>
                           </li>
-                          <!-- <li><a href="index-2.html">Home Two</a></li>
-                          <li><a href="index-3.html">Home Three</a></li> -->
+                          <li><a href="index-2.html">Home Two</a></li>
+                          <li><a href="index-3.html">Home Three</a></li>
                         </ul>
                       </li>
                       <li class="menu-item-has-children">
@@ -250,7 +251,7 @@
                           </li>
                         </ul>
                       </li>
-                      <!-- <li class="menu-item-has-children">
+                      <li class="menu-item-has-children">
                         <a href="blog.html">Pages</a>
                         <ul class="sub-menu">
                           <li><a href="blog.html">Blog</a></li>
@@ -263,7 +264,7 @@
                             <a href="product-details.html">Product Details</a>
                           </li>
                         </ul>
-                      </li> -->
+                      </li>
                       <li><a href="contact.html">Contact</a></li>
                     </ul>
                   </div>
@@ -388,16 +389,19 @@
           <div class="contact-list mb-30">
             <h4>Office Address</h4>
             <a href="https://www.google.com/maps" target="_blank"
-              >AFCFTA Secretariat, Accra, Ghana</a
+              >123/A, Miranda City Likaoli <br />
+              Prikano, Dope</a
             >
           </div>
           <div class="contact-list mb-30">
             <h4>Phone Number</h4>
-            <a href="tel:+233 302 900 730">+233 302 900 730</a>
+            <a href="tel:(090)87658654385">+0989 7876 9865 9</a>
+            <a href="tel:(090)87658654385">+(090) 8765 86543 85</a>
           </div>
           <div class="contact-list mb-30">
             <h4>Email Address</h4>
-            <a href="mailto:hackathon@afcfta.org">hackathon@afcfta.org</a>
+            <a href="mailto:info@example.com">info@example.com</a>
+            <a href="mailto:info@example.com">example.mail@hum.com</a>
           </div>
         </div>
         <div class="offCanvas__social-icon mt-30">
@@ -636,21 +640,21 @@
                   class="td-hero-subtitle mb-10 wow td-animetion-left"
                   data-wow-duration="1.5s"
                   data-wow-delay="0.1s"
-                  >April 30 - May 4, 2025</span
+                  >18 - 22 Nov, 2025</span
                 >
                 <h2
                   class="td-hero-title wow td-animetion-left"
                   data-wow-duration="1.5s"
                   data-wow-delay="0.3s"
                 >
-                  AFCFTA Digital Trade Protocol Hackathon
+                  Business Summit 2025
                 </h2>
                 <p
                   class="td-hero-location wow mb-35 td-animetion-left"
                   data-wow-duration="1.5s"
                   data-wow-delay="0.5s"
                 >
-                  AFCFTA Secretariat, Accra, Ghana
+                  23rd Avenue, 4th Street, Chicago, Illinois, USA
                 </p>
                 <div
                   class="td-hero-countdown mb-40 wow td-animetion-right"
@@ -668,10 +672,10 @@
                   class="td-btn td-left-right wow td-animetion-top"
                   data-wow-duration="1.5s"
                   data-wow-delay="0.9s"
-                  href="events-details.html"
+                  href="about.html"
                 >
                   <span class="mr10 td-text d-inline-block mr-5"
-                    >REGISTER NOW</span
+                    >DISCOVER MORE</span
                   >
                   <span class="td-arrow-angle">
                     <svg
@@ -3120,7 +3124,7 @@
       <!-- td-schedule-area-end -->
 
       <!-- td-blog-area-start -->
-      <!-- <div class="td-blog-area pt-140 pb-110">
+      <div class="td-blog-area pt-140 pb-110">
         <div class="container">
           <div class="row justify-content-center">
             <div class="col-xl-6 col-lg-8">
@@ -3315,7 +3319,7 @@
             </div>
           </div>
         </div>
-      </div> -->
+      </div>
       <!-- td-blog-area-end -->
 
       <!-- td-map-area-start -->
@@ -3394,15 +3398,15 @@
                     ><img src="assets/img/logo/logo-white.png" alt="logo"
                   /></a>
                 </div>
-                <p class="text mb-10">AFCFTA Secretariat, Accra, Ghana</p>
+                <p class="text mb-10">
+                  Middlest 2 East 42nd Streearketplace New York, NY 10017
+                </p>
                 <a
                   class="number mb-10 d-inline-block"
-                  href="tel:+233 302 900 730"
-                  >+233 302 900 730</a
+                  href="tel:+123(55)90067990"
+                  >+123(55) 90067990</a
                 >
-                <a class="email" href="mailto:hackathon@afcfta.org"
-                  >hackathon@afcfta.org</a
-                >
+                <a class="email" href="mailto:info@gmail.com">info@gmail.com</a>
               </div>
             </div>
             <div class="col-lg-5 col-md-7">
@@ -3469,7 +3473,7 @@
                 <div class="row align-items-center">
                   <div class="col-md-9">
                     <div class="td-footer-bottom-copyright mb-30">
-                      <p>Copyright © 2025 afcfta.org. All rights reserved.</p>
+                      <p>Copyright © 2025 evente.com. All rights reserved.</p>
                     </div>
                   </div>
                   <div class="col-md-3">
