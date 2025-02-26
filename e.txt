@@ -1,3 +1,0 @@
-<div class="tab-pane fade" id="v-pills-life" role="tabpanel" aria-labelledby="v-pills-life-tab">
-                 
-                </div>
