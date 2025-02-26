@@ -1,3 +1,33 @@
-.index-about {
-  font-size: larger;
+/* Aggressive approach to find and eliminate unwanted spacing */
+#v-pills-home1 * {
+  margin-bottom: 0 !important;
+}
+
+/* Target specific elements that might be causing space */
+.td-schedule-item {
+  margin-bottom: 0 !important;
+}
+
+/* Fix structural layout issues */
+.tp-contact-form-wrapper.tab-content {
+  display: block !important;
+  margin-bottom: 0 !important;
+}
+
+/* Remove any bottom padding */
+#v-pills-home1 {
+  padding-bottom: 0 !important;
+}
+
+/* Target any potential ghost elements or clearfix issues */
+#v-pills-home1:after {
+  display: none !important;
+}
+
+/* Fix potential float issues */
+.clearfix:after,
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
 }
