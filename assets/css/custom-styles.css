@@ -43,13 +43,15 @@
 }
 
 /* About thumb image sizing */
-.td-about-thumb {
+.td-about-thumb,
+.td-about-thumb-2 {
   max-width: 888px;
   width: 100%;
   margin: 0 auto;
 }
 
-.td-about-thumb img {
+.td-about-thumb img,
+.td-about-thumb-2 img {
   width: 100%;
   height: 460px;
   object-fit: cover;
