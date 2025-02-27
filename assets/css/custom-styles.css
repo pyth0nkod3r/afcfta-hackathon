@@ -42,12 +42,16 @@
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
 }
 
-/* About thumb image sizing */
+/* About thumb image sizing and design */
 .td-about-thumb,
 .td-about-thumb-2 {
   max-width: 888px;
   width: 100%;
   margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 .td-about-thumb img,
@@ -56,6 +60,12 @@
   height: 460px;
   object-fit: cover;
   object-position: center;
+  transition: transform 0.3s ease;
+}
+
+.td-about-thumb:hover img,
+.td-about-thumb-2:hover img {
+  transform: scale(1.05);
 }
 
 /* Registration Form Styles */
