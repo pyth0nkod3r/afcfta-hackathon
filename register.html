@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html class="no-js" lang="en">
   <!-- Mirrored from html.themegenix.com/evente/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 17 Feb 2025 11:12:40 GMT -->
+
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
@@ -29,6 +30,10 @@
     <link rel="stylesheet" href="assets/css/default.css" />
     <link rel="stylesheet" href="assets/css/main.css" />
     <link rel="stylesheet" href="assets/css/custom-styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"
+    />
   </head>
 
   <body>
@@ -252,7 +257,11 @@
           <div class="row">
             <div class="col-12">
               <div class="td-contact-form-wrap">
-                <form id="registration-form" action="#" method="POST">
+                <form
+                  id="registration-form"
+                  method="POST"
+                  onsubmit="return false;"
+                >
                   <div class="td-contact-form-box">
                     <h3 class="td-postbox-form-title mb-15">
                       Register for AFCFTA Hackathon
@@ -291,7 +300,6 @@
                           name="phone"
                           type="tel"
                           placeholder="Phone Number *"
-                          required
                         />
                       </div>
                       <div class="col-lg-6 col-md-6 mb-20">
@@ -335,7 +343,7 @@
                       <div class="col-12 mb-20">
                         <textarea
                           class="td-input message"
-                          name="motivation"
+                          name="message"
                           cols="30"
                           rows="5"
                           placeholder="Why do you want to participate in this hackathon? *"
@@ -346,6 +354,9 @@
                         <button type="submit" class="td-btn">
                           Submit Registration
                         </button>
+                      </div>
+                      <div class="col-12 mt-15">
+                        <div class="status"></div>
                       </div>
                       <p class="ajax-response pt-20"></p>
                     </div>
@@ -454,8 +465,8 @@
                   <div class="col-md-9">
                     <div class="td-footer-bottom-copyright mb-30">
                       <p>
-                        Copyright © 2025 AFCFTA Digital Trade Protocol
-                        Hackathon. All rights reserved.
+                        Copyright 2025 AFCFTA Digital Trade Protocol Hackathon.
+                        All rights reserved.
                       </p>
                     </div>
                   </div>
@@ -499,6 +510,7 @@
 
     <!-- JS here -->
     <script src="assets/js/vendor/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
     <script src="assets/js/isotope.pkgd.min.js"></script>
     <script src="assets/js/ion.rangeSlider.min.js"></script>
@@ -512,5 +524,6 @@
     <script src="assets/js/ajax-form.js"></script>
     <script src="assets/js/wow.min.js"></script>
     <script src="assets/js/main.js"></script>
+    <script src="assets/js/custom-js.js"></script>
   </body>
 </html>
