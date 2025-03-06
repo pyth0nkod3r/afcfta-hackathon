@@ -36,7 +36,18 @@ document.addEventListener("DOMContentLoaded", function () {
       input.addEventListener("blur", function () {
         const errorMsg = input.parentNode.querySelector(".phone-error");
         if (input.value.trim()) {
-          if (iti.isValidNumber()) {
+          // Check for numeric characters only
+          const hasNonNumeric = /[^\d\+\-\s]/.test(input.value);
+
+          // Get clean number without formatting characters
+          const cleanNumber = iti.getNumber().replace(/[\+\-\s]/g, "");
+
+          // Check if valid and meets minimum length of 10 digits
+          if (
+            iti.isValidNumber() &&
+            !hasNonNumeric &&
+            cleanNumber.length >= 10
+          ) {
             input.classList.remove("error");
             input.classList.add("valid");
             if (errorMsg) errorMsg.remove();
@@ -49,7 +60,15 @@ document.addEventListener("DOMContentLoaded", function () {
               msg.style.color = "red";
               msg.style.fontSize = "12px";
               msg.style.marginTop = "5px";
-              msg.textContent = "Please enter a valid phone number";
+
+              if (hasNonNumeric) {
+                msg.textContent = "Phone number should contain only digits";
+              } else if (cleanNumber.length < 10) {
+                msg.textContent = "Phone number must be at least 10 digits";
+              } else {
+                msg.textContent = "Please enter a valid phone number";
+              }
+
               input.parentNode.appendChild(msg);
             }
           }
@@ -74,12 +93,24 @@ document.addEventListener("DOMContentLoaded", function () {
   const registrationForm = document.getElementById("registration-form");
   if (registrationForm) {
     registrationForm.addEventListener("submit", function (event) {
+      // Explicitly prevent default form submission
       event.preventDefault();
       console.log("Registration form submission started");
 
       const status = registrationForm.querySelector(".status");
       if (!status) {
         console.error("Status element not found in registration form");
+        return;
+      }
+
+      // Check for any validation errors in the form before proceeding
+      const errorElements = registrationForm.querySelectorAll(".error");
+      const errorMessages = registrationForm.querySelectorAll(".phone-error");
+
+      if (errorElements.length > 0 || errorMessages.length > 0) {
+        status.style.color = "red";
+        status.textContent =
+          "Please fix the errors in the form before submitting";
         return;
       }
 
@@ -106,12 +137,27 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
       }
 
-      // Skip validation temporarily to debug
-      // We'll just use the raw phone number
+      // Registration form phone validation
       const rawPhoneNumber = phoneInputElement.value.trim();
       if (rawPhoneNumber === "") {
         status.style.color = "red";
         status.textContent = "Please enter a phone number";
+        return;
+      }
+
+      // Validate phone number
+      const hasNonNumeric = /[^\d\+\-\s]/.test(rawPhoneNumber);
+      const cleanNumber = phoneInput.getNumber().replace(/[\+\-\s]/g, "");
+
+      if (hasNonNumeric) {
+        status.style.color = "red";
+        status.textContent = "Phone number should contain only digits";
+        return;
+      }
+
+      if (cleanNumber.length < 10) {
+        status.style.color = "red";
+        status.textContent = "Phone number must be at least 10 digits";
         return;
       }
 
@@ -216,6 +262,17 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
       }
 
+      // Check for any validation errors in the form before proceeding
+      const errorElements = contactForm.querySelectorAll(".error");
+      const errorMessages = contactForm.querySelectorAll(".phone-error");
+
+      if (errorElements.length > 0 || errorMessages.length > 0) {
+        status.style.color = "red";
+        status.textContent =
+          "Please fix the errors in the form before submitting";
+        return;
+      }
+
       // Get the phone input directly from the form
       const phoneInputElement = contactForm.querySelector(
         'input[name="phone"]'
@@ -239,12 +296,27 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
       }
 
-      // Skip validation temporarily to debug
-      // We'll just use the raw phone number
+      // Contact form phone validation
       const rawPhoneNumber = phoneInputElement.value.trim();
       if (rawPhoneNumber === "") {
         status.style.color = "red";
         status.textContent = "Please enter a phone number";
+        return;
+      }
+
+      // Validate phone number
+      const hasNonNumeric = /[^\d\+\-\s]/.test(rawPhoneNumber);
+      const cleanNumber = phoneInput.getNumber().replace(/[\+\-\s]/g, "");
+
+      if (hasNonNumeric) {
+        status.style.color = "red";
+        status.textContent = "Phone number should contain only digits";
+        return;
+      }
+
+      if (cleanNumber.length < 10) {
+        status.style.color = "red";
+        status.textContent = "Phone number must be at least 10 digits";
         return;
       }
 
