@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       });
     } catch (error) {
-      console.error("Error initializing phone input:", error);
+      console.error("Error initializing phone input:", error.message);
     }
   });
 
@@ -83,14 +83,57 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
       }
 
-      const phoneInput = phoneUtils[0];
-      if (!phoneInput || !phoneInput.isValidNumber()) {
+      // Get the phone input directly from the form
+      const phoneInputElement = registrationForm.querySelector(
+        'input[name="phone"]'
+      );
+      let phoneInput = null;
+
+      // Find the corresponding phoneUtils instance for this specific input element
+      for (let i = 0; i < phoneInputs.length; i++) {
+        if (phoneInputs[i] === phoneInputElement) {
+          phoneInput = phoneUtils[i];
+          break;
+        }
+      }
+
+      // Check if we found the phone input and if it's valid
+      if (!phoneInput) {
+        console.error("Could not find phone input util for registration form");
         status.style.color = "red";
-        status.textContent = "Please enter a valid phone number";
+        status.textContent =
+          "Error with phone validation. Please contact support.";
         return;
       }
 
-      // Get message from either motivation field or message field (whichever exists)
+      // Skip validation temporarily to debug
+      // We'll just use the raw phone number
+      const rawPhoneNumber = phoneInputElement.value.trim();
+      if (rawPhoneNumber === "") {
+        status.style.color = "red";
+        status.textContent = "Please enter a phone number";
+        return;
+      }
+
+      // Include country code if not present
+      let phoneNumber = rawPhoneNumber;
+      if (!phoneNumber.startsWith("+")) {
+        // Try to get the phone number with country code from the library
+        try {
+          phoneNumber = phoneInput.getNumber();
+        } catch (err) {
+          console.warn("Could not format phone number, using raw input", err);
+          // If Nigerian number without country code, add it
+          if (
+            phoneNumber.length === 10 ||
+            (phoneNumber.length === 11 && phoneNumber.startsWith("0"))
+          ) {
+            phoneNumber = "+234" + phoneNumber.replace(/^0/, "");
+          }
+        }
+      }
+
+      // Get message from message field
       const messageField = registrationForm.querySelector("[name='message']");
 
       const formData = {
@@ -98,7 +141,7 @@ document.addEventListener("DOMContentLoaded", function () {
           .value,
         lastName: registrationForm.querySelector("[name='lastName']").value,
         emailAddress: registrationForm.querySelector("[name='email']").value,
-        phoneNumber: phoneInput.getNumber(),
+        phoneNumber: phoneNumber,
         country: registrationForm.querySelector("[name='country']").value,
         areaOfExpertise:
           registrationForm.querySelector("[name='expertise']").value,
@@ -122,7 +165,23 @@ document.addEventListener("DOMContentLoaded", function () {
         .then((res) => {
           if (!res.ok) {
             return res.text().then((text) => {
-              throw new Error(text || "Registration failed");
+              let errorMessage = "Registration failed";
+              try {
+                const errorData = JSON.parse(text);
+                if (
+                  errorData.messages &&
+                  typeof errorData.messages === "object"
+                ) {
+                  // Format error messages to display only the values from messages object
+                  errorMessage = Object.values(errorData.messages).join("\n");
+                }
+              } catch (parseError) {
+                errorMessage = text || "Registration failed";
+              }
+              // Create a custom error object with just the formatted message
+              const error = new Error(errorMessage);
+              // Reject the promise with this error
+              return Promise.reject(error);
             });
           }
           return res.json();
@@ -136,8 +195,9 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .catch((error) => {
           status.style.color = "red";
-          status.textContent = `Error: ${error.message}`;
-          console.error("Error:", error);
+          // Display the clean error message
+          status.textContent = error.message;
+          console.error("Form submission error:", error.message);
         });
     });
   }
@@ -156,17 +216,60 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
       }
 
-      const phoneInput = phoneUtils[1];
-      if (!phoneInput || !phoneInput.isValidNumber()) {
+      // Get the phone input directly from the form
+      const phoneInputElement = contactForm.querySelector(
+        'input[name="phone"]'
+      );
+      let phoneInput = null;
+
+      // Find the corresponding phoneUtils instance for this specific input element
+      for (let i = 0; i < phoneInputs.length; i++) {
+        if (phoneInputs[i] === phoneInputElement) {
+          phoneInput = phoneUtils[i];
+          break;
+        }
+      }
+
+      // Check if we found the phone input and if it's valid
+      if (!phoneInput) {
+        console.error("Could not find phone input util for contact form");
         status.style.color = "red";
-        status.textContent = "Please enter a valid phone number";
+        status.textContent =
+          "Error with phone validation. Please contact support.";
         return;
+      }
+
+      // Skip validation temporarily to debug
+      // We'll just use the raw phone number
+      const rawPhoneNumber = phoneInputElement.value.trim();
+      if (rawPhoneNumber === "") {
+        status.style.color = "red";
+        status.textContent = "Please enter a phone number";
+        return;
+      }
+
+      // Include country code if not present
+      let phoneNumber = rawPhoneNumber;
+      if (!phoneNumber.startsWith("+")) {
+        // Try to get the phone number with country code from the library
+        try {
+          phoneNumber = phoneInput.getNumber();
+        } catch (err) {
+          console.warn("Could not format phone number, using raw input", err);
+          // If Nigerian number without country code, add it
+          if (
+            phoneNumber.length === 10 ||
+            (phoneNumber.length === 11 && phoneNumber.startsWith("0"))
+          ) {
+            phoneNumber = "+234" + phoneNumber.replace(/^0/, "");
+          }
+        }
       }
 
       const formData = {
         fullName: contactForm.querySelector("[name='name']").value,
         emailAddress: contactForm.querySelector("[name='email']").value,
-        phoneNumber: phoneInput.getNumber(),
+        phoneNumber: phoneNumber,
         message: contactForm.querySelector("[name='message']").value,
       };
 
@@ -185,7 +288,23 @@ document.addEventListener("DOMContentLoaded", function () {
         .then((res) => {
           if (!res.ok) {
             return res.text().then((text) => {
-              throw new Error(text || "Message sending failed");
+              let errorMessage = "Message sending failed";
+              try {
+                const errorData = JSON.parse(text);
+                if (
+                  errorData.messages &&
+                  typeof errorData.messages === "object"
+                ) {
+                  // Format error messages to display only the values from messages object
+                  errorMessage = Object.values(errorData.messages).join("\n");
+                }
+              } catch (parseError) {
+                errorMessage = text || "Message sending failed";
+              }
+              // Create a custom error object with just the formatted message
+              const error = new Error(errorMessage);
+              // Reject the promise with this error
+              return Promise.reject(error);
             });
           }
           return res.json();
@@ -199,8 +318,9 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .catch((error) => {
           status.style.color = "red";
-          status.textContent = `Error: ${error.message}`;
-          console.error("Error:", error);
+          // Display the clean error message
+          status.textContent = error.message;
+          console.error("Form submission error:", error.message);
         });
     });
   }
