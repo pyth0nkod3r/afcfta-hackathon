@@ -133,3 +133,19 @@
 ul.m-0 > li {
   list-style-type: square;
 }
+
+div ul li ul.list-group {
+  padding-left: 1rem;
+}
+
+div ul li + li ul.list-group li,
+div ul li + li ul.list-group li span {
+  list-style-type: circle;
+  font-weight: normal;
+  color: black;
+  font-size: 0.95rem;
+}
+div ul li + li p {
+  margin-bottom: 0;
+  color: red;
+}
