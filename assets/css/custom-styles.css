@@ -145,7 +145,14 @@ div ul li + li ul.list-group li span {
   color: black;
   font-size: 0.95rem;
 }
-div ul li + li p {
+div ul li + li p,
+p.day-five-categories,
+ul.day-five-categories li p {
   margin-bottom: 0;
-  color: red;
+}
+li ul.day-five-categories li {
+  list-style-type: circle;
+}
+.last-category {
+  margin-top: .95rem;
 }
