@@ -257,107 +257,192 @@
             <div class="col-12">
               <div class="td-contact-form-wrap">
                 <form
-                  id="registration-form"
+                  id="registrationForm"
                   method="POST"
                   onsubmit="return false;"
                 >
                   <div class="td-contact-form-box">
                     <h3 class="td-postbox-form-title mb-15">
-                      Register for AFCFTA Hackathon
+                      AfCFTA Digital Trade Hackathon Registration Form
                     </h3>
                     <div class="row">
-                      <div class="col-lg-6 col-md-6 mb-20">
-                        <input
-                          class="td-input"
-                          name="firstName"
-                          type="text"
-                          placeholder="First Name *"
+                      <div class="col-lg-6 col-md-6
+                      <!-- 1. Team Information -->
+                      <div class="section">
+                        <h3>1. Team Information</h3>
+                        <label>Team Name *</label>
+                        <input type="text" required />
+                        <label>Team Size *</label>
+                        <select
+                          id="teamSize"
+                          onchange="generateTeamMembers()"
                           required
-                        />
-                      </div>
-                      <div class="col-lg-6 col-md-6 mb-20">
-                        <input
-                          class="td-input"
-                          name="lastName"
-                          type="text"
-                          placeholder="Last Name *"
-                          required
-                        />
-                      </div>
-                      <div class="col-lg-6 col-md-6 mb-20">
-                        <input
-                          class="td-input"
-                          name="email"
-                          type="email"
-                          placeholder="Email Address *"
-                          required
-                        />
-                      </div>
-                      <div class="col-lg-6 col-md-6 mb-20">
-                        <input
-                          class="td-input"
-                          name="phone"
-                          type="tel"
-                          placeholder="Phone Number *"
-                        />
-                      </div>
-                      <div class="col-lg-6 col-md-6 mb-20">
-                        <select class="td-input" name="country" required>
-                          <option value="">Select Your Country *</option>
-                          <option value="nigeria">Nigeria</option>
-                          <option value="ghana">Ghana</option>
-                          <option value="kenya">Kenya</option>
-                          <option value="southAfrica">South Africa</option>
-                          <option value="other">Other</option>
+                        >
+                          <option value="">Select</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                          <option value="5">5</option>
                         </select>
                       </div>
-                      <div class="col-lg-6 col-md-6 mb-20">
-                        <select class="td-input" name="expertise" required>
-                          <option value="">Area of Expertise *</option>
-                          <option value="developer">Software Developer</option>
-                          <option value="designer">UI/UX Designer</option>
-                          <option value="business">Business Analyst</option>
-                          <option value="product">Product Manager</option>
-                          <option value="other">Other</option>
+                      <!-- 2. Team Leader -->
+                      <div class="section">
+                        <h3>2. Team Leader (Primary Contact)</h3>
+                        <label>Full Name *</label>
+                        <input type="text" required />
+                        <label>Email Address *</label>
+                        <input type="email" required />
+                        <label>Phone Number *</label>
+                        <input type="tel" required />
+                        <label>LinkedIn Profile</label> <input type="url" />
+                        <label>Country of Residence *</label>
+                        <input type="text" required />
+                        <label>Nationality *</label>
+                        <input type="text" required /> <label>Age *</label>
+                        <input type="number" min="18" required />
+                        <label>Gender</label>
+                        <select>
+                          <option value="">Select</option>
+                          <option>Male</option>
+                          <option>Female</option>
+                          <option>Prefer not to say</option>
                         </select>
                       </div>
-                      <div class="col-12 mb-20">
+                      <!-- 3. Team Members -->
+                      <div class="section">
+                        <h3>3. Team Members</h3>
+                        <div id="teamMembersContainer"></div>
+                        <input type="text" required />
+                      </div>
+                      <!-- Remaining sections stay unchanged -->
+                      <!-- 4. About Your Idea -->
+                      <div class="section">
+                        <h3>4. About Your Idea</h3>
+                        <label>Project Title / Idea Name *</label>
+                        <input type="text" required />
+                        <label
+                          >Which challenge area does your idea address?</label
+                        >
+                        <div class="checkbox-group">
+                          <label
+                            ><input type="checkbox" /> E-Commerce Facilitation &
+                            Regulation</label
+                          >
+                          <label
+                            ><input type="checkbox" /> Internet and Last-Mile
+                            Connectivity</label
+                          >
+                          <label
+                            ><input type="checkbox" /> Digital Payments &
+                            Financial Inclusion</label
+                          >
+                          <label
+                            ><input type="checkbox" /> Logistics Infrastructure
+                            Expansion</label
+                          >
+                          <label
+                            ><input type="checkbox" /> Youth and MSMEs
+                            Participation & Empowerment</label
+                          >
+                          <label
+                            ><input type="checkbox" /> E-Commerce Adoption &
+                            Demand</label
+                          >
+                          <label
+                            ><input type="checkbox" /> Africa and Global Market
+                            Penetration</label
+                          >
+                        </div>
+                        <label
+                          >Brief Summary of Your Idea (Max 300 words) *</label
+                        >
+                        <textarea maxlength="2000" required></textarea>
+                        <label>What problem are you solving? *</label>
+                        <textarea required></textarea>
+                        <label>What technology will you apply?</label>
                         <input
-                          class="td-input"
-                          name="organization"
                           type="text"
-                          placeholder="Organization/Institution"
+                          placeholder="e.g., AI, Blockchain, APIs"
                         />
+                        <label
+                          >How does your solution align with the goals of
+                          AfCFTA? *</label
+                        >
+                        <textarea required></textarea>
                       </div>
-                      <!-- <div class="col-12 mb-20">
-                        <textarea
-                          class="td-input message"
-                          name="experience"
-                          cols="30"
-                          rows="5"
-                          placeholder="Brief description of your relevant experience *"
-                          required
-                        ></textarea>
-                      </div> -->
-                      <div class="col-12 mb-20">
-                        <textarea
-                          class="td-input message"
-                          name="message"
-                          cols="30"
-                          rows="5"
-                          placeholder="Why do you want to participate in this hackathon? *"
-                          required
-                        ></textarea>
+                      <!-- 5. Technical Details -->
+                      <div class="section">
+                        <h3>5. Technical Details</h3>
+                        <label>Do you have an existing prototype or MVP?</label>
+                        <select>
+                          <option>No</option>
+                          <option>Yes</option>
+                        </select>
+                        <label>Provide link or upload if Yes</label>
+                        <input
+                          type="url"
+                          placeholder="URL to prototype or MVP"
+                        />
+                        <input type="file" accept=".pdf,.ppt,.docx" />
+                        <label
+                          >Project GitHub/Code Repository Link (Optional)</label
+                        >
+                        <input type="url" />
                       </div>
-                      <div class="col-12">
-                        <button type="submit" class="td-btn">
-                          Submit Registration
-                        </button>
+                      <!-- 6. Participation Details -->
+                      <div class="section">
+                        <h3>6. Participation Details</h3>
+                        <label>How did you hear about the Hackathon?</label>
+                        <select>
+                          <option>Social Media</option>
+                          <option>Partner Organization</option>
+                          <option>University/Institution</option>
+                          <option>Friend/Colleague</option>
+                          <option>Other</option>
+                        </select>
+                        <label
+                          >Have you participated in a Hackathon before?</label
+                        >
+                        <select>
+                          <option>No</option>
+                          <option>Yes</option>
+                        </select>
+                        <label>If yes, which ones?</label> <input type="text" />
+                        <label
+                          >Are you available to participate fully during the
+                          Hackathon dates?</label
+                        >
+                        <select>
+                          <option>Yes</option>
+                          <option>No</option>
+                        </select>
                       </div>
-                      <div class="col-12 mt-15">
-                        <div class="status"></div>
+                      <!-- 7. Declaration & Consent -->
+                      <div class="section">
+                        <h3>7. Declaration & Consent</h3>
+                        <div class="checkbox-group">
+                          <label
+                            ><input type="checkbox" required /> I confirm that
+                            all team members are of African origin and at least
+                            18 years old.</label
+                          >
+                          <label
+                            ><input type="checkbox" required /> I agree to the
+                            terms and conditions of participation.</label
+                          >
+                          <label
+                            ><input type="checkbox" required /> I consent to
+                            receive updates related to the Hackathon via email
+                            or phone.</label
+                          >
+                          <label
+                            ><input type="checkbox" required /> I understand
+                            that my data will be used in accordance with the
+                            privacy policy.</label
+                          >
+                        </div>
                       </div>
-                      <p class="ajax-response pt-20"></p>
+                      <button type="submit">Apply Now</button>
                     </div>
                   </div>
                 </form>
