@@ -1,3 +1,12 @@
+h4.td-animetion-left {
+  color: #007bff;
+  font-size: 1.3rem;
+}
+
+span.td-section-subtitle {
+  color: white;
+  font-size: 1.3rem;
+}
 .td-footer-logo img {
   max-width: 100px;
   height: auto;
