@@ -2,7 +2,14 @@ h4.td-animetion-left {
   color: #007bff;
   font-size: 1.3rem;
 }
-
+div p.increase-font {
+  font-size: 1rem;
+  width: 60%;
+}
+div h2.td-section-title.reduce {
+  font-size: 2rem;
+  width: 60%;
+}
 span.td-section-subtitle {
   color: white;
   font-size: 1.3rem;
