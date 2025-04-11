@@ -5,8 +5,9 @@ h4.td-animetion-left {
 div span.increase-font {
   font-size: 2rem;
 }
-a.td-btn.change-hover {
+a.td-btn.change-hover:hover {
   color: #007bff;
+  background-color: orange;
 }
 div h2.td-section-title.reduce {
   font-size: 1.2rem;
@@ -91,10 +92,17 @@ span.td-section-subtitle {
 .td-about-thumb img,
 .td-about-thumb-2 img {
   width: 100%;
-  height: 600px;
+  height: 400px; /* Reduced from 600px to 400px */
   object-fit: cover;
   object-position: center;
   transition: transform 0.3s ease;
+}
+
+/* Add specific styling for challenge images */
+.td-about-area .td-about-thumb img {
+  height: 300px; /* Even smaller height for challenge cards */
+  object-fit: cover;
+  object-position: center;
 }
 
 .td-about-thumb:hover img,
@@ -650,4 +658,124 @@ li ul.day-five-categories li {
 
 .last-category {
   margin-top: 0.95rem;
+}
+
+/* Challenge Cards Styles */
+.challenge-card {
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-left: 4px solid #007bff;
+}
+
+.challenge-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 123, 255, 0.15);
+}
+
+.challenge-icon {
+  color: #007bff;
+}
+
+.challenge-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+
+.challenge-content h5 {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.challenge-content p {
+  color: #555;
+  line-height: 1.6;
+}
+
+.td-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 5px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.td-btn:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+/* Responsive adjustments for challenge cards */
+@media (max-width: 991px) {
+  .challenge-card {
+    margin-bottom: 30px;
+  }
+}
+/* Enhanced Apply Now Button */
+.apply-now-btn {
+  padding: 15px 35px !important;
+  font-size: 1.25rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  background: linear-gradient(135deg, #007bff 0%, #ff8800 100%) !important;
+  border-radius: 50px !important;
+  box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4) !important;
+  transition: all 0.3s ease !important;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.apply-now-btn:hover {
+  transform: translateY(-5px) scale(1.05) !important;
+  box-shadow: 0 8px 25px rgba(233, 162, 30, 0.5) !important;
+}
+
+.apply-now-btn:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #00c6ff 0%, #c8ff00 100%);
+  z-index: -1;
+  transition: opacity 0.3s ease;
+  opacity: 0;
+}
+
+.apply-now-btn:hover:before {
+  opacity: 1;
+}
+
+/* Pulse animation for the button */
+.pulse-animation {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 123, 255, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 15px rgba(0, 123, 255, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 123, 255, 0);
+  }
+}
+
+/* Make button responsive */
+@media (max-width: 768px) {
+  .apply-now-btn {
+    padding: 12px 25px !important;
+    font-size: 1.1rem !important;
+  }
 }
