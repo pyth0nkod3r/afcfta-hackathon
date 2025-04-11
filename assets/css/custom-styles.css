@@ -2,17 +2,33 @@ h4.td-animetion-left {
   color: #007bff;
   font-size: 1.3rem;
 }
-div p.increase-font {
-  font-size: 1rem;
-  width: 60%;
-}
-div h2.td-section-title.reduce {
+div span.increase-font {
   font-size: 2rem;
-  width: 60%;
+}
+
+div h2.td-section-title.reduce {
+  font-size: 1.2rem;
+  width: 80%;
+}
+div h2.made-smaller.text-capitalize {
+  font-size: 2rem;
+  color: black;
+}
+span.text-info-emphasis {
+  font-size: 1.5rem;
+  color: black;
+}
+@media (min-width: 992px) {
+  div ul.navigation.reduce-font-size li a {
+    font-size: 0.8rem;
+  }
+}
+p.about-hackathon {
+  font-size: 1.4rem;
 }
 span.td-section-subtitle {
   color: white;
-  font-size: 1.3rem;
+  font-size: 1.5rem;
 }
 .td-footer-logo img {
   max-width: 100px;

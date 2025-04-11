@@ -84,9 +84,10 @@
   //Mobile Nav Hide Show
   if ($(".tdmobile__menu").length) {
     var mobileMenuContent = $(".tdmenu__wrap .tdmenu__main-menu").html();
-    $(".tdmobile__menu .tdmobile__menu-box .tdmobile__menu-outer").append(
-      mobileMenuContent
-    );
+    $(".tdmobile__menu .tdmobile__menu-box .tdmobile__menu-outer")
+      .append(mobileMenuContent)
+      .find(".the-hidden")
+      .removeClass("d-lg-none");
 
     //Dropdown Button
     $(".tdmobile__menu li.menu-item-has-children .dropdown-btn").on(
