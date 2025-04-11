@@ -5,7 +5,9 @@ h4.td-animetion-left {
 div span.increase-font {
   font-size: 2rem;
 }
-
+a.td-btn.change-hover {
+  color: #007bff;
+}
 div h2.td-section-title.reduce {
   font-size: 1.2rem;
   width: 80%;
