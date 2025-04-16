@@ -5,7 +5,9 @@ h4.td-animetion-left {
 div span.increase-font {
   font-size: 2rem;
 }
-
+span.remove-capitalization.styling {
+  text-transform: none;
+}
 
 a.td-btn.change-hover:hover {
   color: #007bff;
@@ -713,7 +715,57 @@ li ul.day-five-categories li {
   background-color: #0056b3;
   transform: translateY(-2px);
 }
+/* Eligibility Criteria Box Styling */
+.eligibility-criteria-box {
+  background-color: #f8f9fa;
+  border-left: 4px solid #007bff;
+  padding: 25px;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  margin-bottom: 30px;
+}
 
+.criteria-title {
+  color: #007bff;
+  font-size: 1.25rem;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.criteria-title i {
+  margin-right: 10px;
+  color: #28a745;
+}
+
+.criteria-list {
+  list-style-type: none;
+  padding-left: 10px;
+  margin-bottom: 20px;
+}
+
+.criteria-list li {
+  position: relative;
+  padding-left: 25px;
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+.criteria-list li:before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: #28a745;
+  font-weight: bold;
+}
+
+.ready-text {
+  font-weight: 600;
+  color: #495057;
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #e9ecef;
+}
 /* Responsive adjustments for challenge cards */
 @media (max-width: 991px) {
   .challenge-card {
