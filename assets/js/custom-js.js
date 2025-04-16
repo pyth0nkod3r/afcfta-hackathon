@@ -26,16 +26,23 @@ document.addEventListener('DOMContentLoaded', function() {
       submitButton.textContent = 'Submitting...';
       submitButton.disabled = true;
       
-      // Collect all form data
-      const formData = collectFormData(registrationForm);
+      // Create FormData object instead of JSON
+      const formData = new FormData();
       
-      // Send data to API
-      fetch('https://gfa-tech.com/afcfta-api/api/hackathon', {
+      // Add form fields to FormData
+      addFormFieldsToFormData(registrationForm, formData);
+      
+      // For file uploads
+      const fileInput = registrationForm.querySelector('input[type="file"]');
+      if (fileInput && fileInput.files.length > 0) {
+        formData.append('fileUpload', fileInput.files[0]);
+      }
+      
+      // Create a proxy endpoint on your server to handle the API request
+      // This is the recommended approach to avoid exposing credentials in client-side code
+      fetch('/api/submit-hackathon', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData)
+        body: formData
       })
       .then(response => {
         if (!response.ok) {
@@ -71,106 +78,87 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
-// Function to collect all form data
-function collectFormData(form) {
-  // Create an object to store all form data
-  const formData = {
-    teamInfo: {},
-    teamLeader: {},
-    teamMembers: [],
-    projectIdea: {},
-    technicalDetails: {},
-    participationDetails: {},
-    declaration: {}
-  };
+// Function to add form fields to FormData
+function addFormFieldsToFormData(form, formData) {
+  // Team Info
+  formData.append('teamName', form.querySelector('.section:nth-child(1) input[type="text"]').value);
+  formData.append('teamSize', form.querySelector('#teamSize').value);
   
-  // Team Information
-  formData.teamInfo = {
-    teamName: form.querySelector('input[type="text"]').value,
-    teamSize: form.querySelector('#teamSize').value
-  };
-  
-  // Team Leader Information
+  // Team Leader
   const leaderSection = form.querySelectorAll('.section')[1];
-  console.log(leaderSection)
-  formData.teamLeader = {
-    fullName: leaderSection.querySelector('input[type="text"]').value,
-    email: leaderSection.querySelector('input[type="email"]').value,
-    phone: leaderSection.querySelector('input[type="tel"]').value,
-    linkedin: leaderSection.querySelector('input[type="url"]').value,
-    country: leaderSection.querySelector('select[name="country"]').value,
-    nationality: leaderSection.querySelector('select[name="nationality"]').value,
-    age: leaderSection.querySelector('input[type="number"]').value,
-    gender: leaderSection.querySelectorAll('select')[2].value
-  };
+  formData.append('teamLeaderFullName', leaderSection.querySelector('input[type="text"]').value);
+  formData.append('teamLeaderEmail', leaderSection.querySelector('input[type="email"]').value);
+  formData.append('teamLeaderPhone', leaderSection.querySelector('input[type="tel"]').value);
+  formData.append('teamLeaderLinkedIn', leaderSection.querySelector('input[type="url"]').value || "");
+  formData.append('teamLeaderCountry', leaderSection.querySelector('select[name="country"]').value);
+  formData.append('teamLeaderNationality', leaderSection.querySelector('select[name="nationality"]').value);
+  formData.append('teamLeaderAge', leaderSection.querySelector('input[type="number"]').value);
+  formData.append('teamLeaderGender', leaderSection.querySelectorAll('select')[2].value);
   
   // Team Members
   const teamMembersContainer = document.getElementById('teamMembersContainer');
   const memberSections = teamMembersContainer.querySelectorAll('.member-section');
   
   memberSections.forEach((section, index) => {
-    const member = {
-      fullName: section.querySelector('input[name^="member"][name$="Name"]').value,
-      email: section.querySelector('input[name^="member"][name$="Email"]').value,
-      phone: section.querySelector('input[name^="member"][name$="Phone"]').value,
-      role: section.querySelector('input[name^="member"][name$="Role"]').value,
-      country: section.querySelector('input[name^="member"][name$="Country"]').value,
-      linkedin: section.querySelector('input[name^="member"][name$="LinkedIn"]').value,
-      nationality: section.querySelector('input[name^="member"][name$="Nationality"]').value,
-      age: section.querySelector('input[name^="member"][name$="Age"]').value,
-      gender: section.querySelector('select[name^="member"][name$="Gender"]').value
-    };
-    
-    formData.teamMembers.push(member);
+    formData.append(`teamMembers[${index}][teamMemberFullName]`, section.querySelector('input[name^="member"][name$="Name"]').value);
+    formData.append(`teamMembers[${index}][teamMemberEmail]`, section.querySelector('input[name^="member"][name$="Email"]').value);
+    formData.append(`teamMembers[${index}][teamMemberPhone]`, section.querySelector('input[name^="member"][name$="Phone"]').value);
+    formData.append(`teamMembers[${index}][teamMemberRole]`, section.querySelector('input[name^="member"][name$="Role"]').value);
+    formData.append(`teamMembers[${index}][teamMemberCountry]`, section.querySelector('input[name^="member"][name$="Country"]').value);
+    formData.append(`teamMembers[${index}][teamMemberLinkedIn]`, section.querySelector('input[name^="member"][name$="LinkedIn"]')?.value || "");
+    formData.append(`teamMembers[${index}][teamMemberNationality]`, section.querySelector('input[name^="member"][name$="Nationality"]').value);
+    formData.append(`teamMembers[${index}][teamMemberAge]`, section.querySelector('input[name^="member"][name$="Age"]').value);
+    formData.append(`teamMembers[${index}][teamMemberGender]`, section.querySelector('select[name^="member"][name$="Gender"]').value);
   });
   
-  // Project Idea
+  // Project Details
   const ideaSection = form.querySelectorAll('.section')[3];
-  const challengeAreas = [];
-  ideaSection.querySelectorAll('.checkbox-group input[type="checkbox"]').forEach(checkbox => {
+  formData.append('projectTitle', ideaSection.querySelector('input[type="text"]').value);
+  
+  // Challenge Areas
+  const challengeCheckboxes = ideaSection.querySelectorAll('.checkbox-group input[type="checkbox"]');
+  let challengeIndex = 0;
+  challengeCheckboxes.forEach(checkbox => {
     if (checkbox.checked) {
-      challengeAreas.push(checkbox.parentElement.textContent.trim());
+      formData.append(`challengeAreas[${challengeIndex}]`, checkbox.parentElement.textContent.trim());
+      challengeIndex++;
     }
   });
   
-  formData.projectIdea = {
-    title: ideaSection.querySelector('input[type="text"]').value,
-    challengeAreas: challengeAreas,
-    summary: ideaSection.querySelectorAll('textarea')[0].value,
-    problem: ideaSection.querySelectorAll('textarea')[1].value,
-    technology: ideaSection.querySelector('input[placeholder="e.g., AI, Blockchain, APIs"]').value,
-    alignment: ideaSection.querySelectorAll('textarea')[2].value
-  };
+  formData.append('ideaSummary', ideaSection.querySelectorAll('textarea')[0].value);
+  formData.append('problemSolving', ideaSection.querySelectorAll('textarea')[1].value);
+  formData.append('technology', ideaSection.querySelector('input[placeholder="e.g., AI, Blockchain, APIs"]').value);
+  formData.append('alignment', ideaSection.querySelectorAll('textarea')[2].value);
   
   // Technical Details
   const technicalSection = form.querySelectorAll('.section')[4];
-  formData.technicalDetails = {
-    hasPrototype: technicalSection.querySelector('select').value,
-    prototypeLink: technicalSection.querySelector('input[type="url"]').value,
-    // Note: File uploads require special handling, not included in this basic implementation
-    repositoryLink: technicalSection.querySelectorAll('input[type="url"]')[1].value
-  };
+  formData.append('hasPrototype', technicalSection.querySelector('select').value);
+  formData.append('prototypeURL', technicalSection.querySelector('input[type="url"]').value || "");
+  formData.append('projectRepo', technicalSection.querySelectorAll('input[type="url"]')[1]?.value || "");
   
   // Participation Details
   const participationSection = form.querySelectorAll('.section')[5];
-  formData.participationDetails = {
-    heardFrom: participationSection.querySelectorAll('select')[0].value,
-    previousHackathon: participationSection.querySelectorAll('select')[1].value,
-    previousHackathonDetails: participationSection.querySelector('input[type="text"]').value,
-    fullyAvailable: participationSection.querySelectorAll('select')[2].value
-  };
+  formData.append('heardAbout', participationSection.querySelectorAll('select')[0].value);
+  formData.append('hasParticipated', participationSection.querySelectorAll('select')[1].value);
+  formData.append('pastHackathons', participationSection.querySelector('input[type="text"]').value || "");
+  formData.append('availability', participationSection.querySelectorAll('select')[2].value);
   
-  // Declaration & Consent
+  // Declarations
   const declarationSection = form.querySelectorAll('.section')[6];
-  const checkboxes = declarationSection.querySelectorAll('input[type="checkbox"]');
-  formData.declaration = {
-    africanOrigin: checkboxes[0].checked,
-    termsAgreed: checkboxes[1].checked,
-    consentToUpdates: checkboxes[2].checked,
-    privacyPolicyAgreed: checkboxes[3].checked
-  };
+  const declarations = declarationSection.querySelectorAll('input[type="checkbox"]');
   
-  return formData;
+  if (declarations[0].checked) {
+    formData.append('declarations[0]', "I confirm that all team members are of African origin and at least 18 years old.");
+  }
+  if (declarations[1].checked) {
+    formData.append('declarations[1]', "I agree to the terms and conditions of participation.");
+  }
+  if (declarations[2].checked) {
+    formData.append('declarations[2]', "I consent to receive updates related to the Hackathon via email or phone.");
+  }
+  if (declarations[3].checked) {
+    formData.append('declarations[3]', "I understand that my data will be used in accordance with the privacy policy.");
+  }
 }
 
 // Function to show notification
