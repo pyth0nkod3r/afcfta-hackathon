@@ -264,7 +264,7 @@
             <div class="col-12">
               <div class="td-contact-form-wrap">
                 <!-- Eligibility Criteria Box -->
-                <div class="eligibility-criteria-box mb-30">
+                <div class="eligibility-criteria-box my-5">
                   <h4 class="criteria-title">
                     <i class="fas fa-check-circle"></i> Eligibility Criteria
                   </h4>
@@ -299,12 +299,13 @@
                       <div class="section">
                         <h3>1. Team Information</h3>
                         <label>Team Name *</label>
-                        <input type="text" required />
+                        <input type="text" name="teamName" required />
                         <label>Team Size *</label>
                         <select
-                          id="teamSize"
+                          id="teamSize" name="teamSize"
                           onchange="generateTeamMembers()"
                           required
+                          class="pe-4"
                         >
                           <option value="">Select</option>
                           <option value="2">2</option>
@@ -317,14 +318,14 @@
                       <div class="section">
                         <h3>2. Team Leader (Primary Contact)</h3>
                         <label>Full Name *</label>
-                        <input type="text" required />
+                        <input type="text" name="leaderName" required />
                         <label>Email Address *</label>
-                        <input type="email" required />
+                        <input type="email" name="leaderEmail" required />
                         <label>Phone Number *</label>
-                        <input type="tel" required />
-                        <label>LinkedIn Profile</label> <input type="url" />
+                        <input type="tel" name="leaderPhone" required />
+                        <label>LinkedIn Profile</label> <input type="url" name="leaderLinkedIn"/>
                         <label>Country of Residence *</label>
-                        <select name="country" required>
+                        <select  name="leaderCountry"required>
                           <option value="">Select Country</option>
                           <option value="Afghanistan">Afghanistan</option>
                           <option value="Albania">Albania</option>
@@ -557,7 +558,7 @@
                           <option value="Zimbabwe">Zimbabwe</option>
                         </select>
                         <label>Nationality *</label>
-                        <select name="nationality" required>
+                        <select  name="leaderNationality" required>
                           <option value="">Select Nationality</option>
                           <option value="Afghan">Afghan</option>
                           <option value="Albanian">Albanian</option>
@@ -780,9 +781,9 @@
                           <option value="Zimbabwean">Zimbabwean</option>
                         </select>
                         <label>Age *</label>
-                        <input type="number" min="18" required />
+                        <input type="number" name="leaderAge" min="18" required />
                         <label>Gender</label>
-                        <select>
+                        <select name="leaderGender " required>
                           <option value="">Select</option>
                           <option>Male</option>
                           <option>Female</option>
@@ -799,81 +800,81 @@
                       <div class="section">
                         <h3>4. About Your Idea</h3>
                         <label>Project Title / Idea Name *</label>
-                        <input type="text" required />
+                        <input type="text" name="projectTitle"  required />
                         <label
                           >Which challenge area does your idea address?</label
                         >
                         <div class="checkbox-group">
                           <label
-                            ><input type="checkbox" /> E-Commerce Facilitation &
+                            ><input name="challengeAreas[0]" type="checkbox" /> E-Commerce Facilitation &
                             Regulation</label
                           >
                           <label
-                            ><input type="checkbox" /> Internet and Last-Mile
+                            ><input name="challengeAreas[1]" type="checkbox" /> Internet and Last-Mile
                             Connectivity</label
                           >
                           <label
-                            ><input type="checkbox" /> Digital Payments &
+                            ><input name="challengeAreas[2]" type="checkbox" /> Digital Payments &
                             Financial Inclusion</label
                           >
                           <label
-                            ><input type="checkbox" /> Logistics Infrastructure
+                            ><input name="challengeAreas[3]" type="checkbox" /> Logistics Infrastructure
                             Expansion</label
                           >
                           <label
-                            ><input type="checkbox" /> Youth and MSMEs
+                            ><input name="challengeAreas[4]" type="checkbox" /> Youth and MSMEs
                             Participation & Empowerment</label
                           >
                           <label
-                            ><input type="checkbox" /> E-Commerce Adoption &
+                            ><input name="challengeAreas[5]" type="checkbox" /> E-Commerce Adoption &
                             Demand</label
                           >
                           <label
-                            ><input type="checkbox" /> Africa and Global Market
+                            ><input name="challengeAreas[6]" type="checkbox" /> Africa and Global Market
                             Penetration</label
                           >
                         </div>
                         <label
                           >Brief Summary of Your Idea (Max 300 words) *</label
                         >
-                        <textarea maxlength="2000" required></textarea>
+                        <textarea name="ideaSummary" maxlength="2000" required></textarea>
                         <label>What problem are you solving? *</label>
-                        <textarea required></textarea>
+                        <textarea name="problemSolving" required></textarea>
                         <label>What technology will you apply?</label>
                         <input
-                          type="text"
+                          type="text" name="technology" 
                           placeholder="e.g., AI, Blockchain, APIs"
-                        />
+                        required/>
                         <label
                           >How does your solution align with the goals of
                           AfCFTA? *</label
                         >
-                        <textarea required></textarea>
+                        <textarea name="alignment" required></textarea>
                       </div>
                       <!-- 5. Technical Details -->
                       <div class="section">
                         <h3>5. Technical Details</h3>
                         <label>Do you have an existing prototype or MVP?</label>
-                        <select>
+                        <select name="hasPrototype">
                           <option>No</option>
                           <option>Yes</option>
                         </select>
                         <label>Provide link or upload if Yes</label>
-                        <input
+                        <input name="prototypeURL"
                           type="url"
                           placeholder="URL to prototype or MVP"
                         />
-                        <input type="file" accept=".pdf,.ppt,.docx" />
+                        <input type="file" name="fileUpload" accept=".pdf,.ppt,.docx" />
                         <label
                           >Project GitHub/Code Repository Link (Optional)</label
                         >
-                        <input type="url" />
+                        <input type="url" name="projectRepo" />
                       </div>
                       <!-- 6. Participation Details -->
                       <div class="section">
                         <h3>6. Participation Details</h3>
                         <label>How did you hear about the Hackathon?</label>
-                        <select>
+                        <select name="heardAbout">
                           <option>Social Media</option>
                           <option>Partner Organization</option>
                           <option>University/Institution</option>
@@ -883,16 +884,16 @@
                         <label
                           >Have you participated in a Hackathon before?</label
                         >
-                        <select>
+                        <select name="hasParticipated">
                           <option>No</option>
                           <option>Yes</option>
                         </select>
-                        <label>If yes, which ones?</label> <input type="text" />
+                        <label>If yes, which ones?</label> <input type="text" name="pastHackathons"/>
                         <label
                           >Are you available to participate fully during the
                           Hackathon dates?</label
                         >
-                        <select>
+                        <select name="availability">
                           <option>Yes</option>
                           <option>No</option>
                         </select>
@@ -902,21 +903,21 @@
                         <h3>7. Declaration & Consent</h3>
                         <div class="checkbox-group">
                           <label
-                            ><input type="checkbox" required /> I confirm that
+                            ><input name="declarations[0]" type="checkbox" required /> I confirm that
                             all team members are of African origin and at least
                             18 years old.</label
                           >
                           <label
-                            ><input type="checkbox" required /> I agree to the
+                            ><input name="declarations[1]" type="checkbox" required /> I agree to the
                             terms and conditions of participation.</label
                           >
                           <label
-                            ><input type="checkbox" required /> I consent to
+                            ><input name="declarations[2]" type="checkbox" required /> I consent to
                             receive updates related to the Hackathon via email
                             or phone.</label
                           >
                           <label
-                            ><input type="checkbox" required /> I understand
+                            ><input name="declarations[3]" type="checkbox" required /> I understand
                             that my data will be used in accordance with the
                             privacy policy.</label
                           >
