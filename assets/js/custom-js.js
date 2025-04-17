@@ -634,6 +634,10 @@ async function submitForm(event) {
     const result = await response.json();
 
     if (!response.ok) {
+      if (result.messages && typeof result.messages === "object") {
+        const errorMessages = Object.values(result.messages).join("<br><br>");
+        throw new Error(errorMessages);
+      }
       throw new Error(result.message || "Failed to submit application");
     }
 
