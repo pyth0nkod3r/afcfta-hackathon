@@ -669,15 +669,78 @@ function addNotificationStyles() {
   document.head.appendChild(style);
 }
 
+// Contact form submission handler
+async function submitContactForm(event) {
+  event.preventDefault();
+  
+  const form = event.target;
+  const submitButton = form.querySelector('button[type="submit"]');
+  submitButton.disabled = true;
+  submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+  
+  try {
+    // Load credentials
+    const credentials = await loadCredentials();
+    
+    // Format contact form data as JSON
+    const contactData = {
+      fullName: form.fullName.value,
+      phoneNumber: form.phoneNumber.value,
+      emailAddress: form.emailAddress.value,
+      message: form.message.value
+    };
+    
+    // Create authorization header
+    const authHeader = 'Basic ' + btoa(`${credentials.username}:${credentials.password}`);
+    
+    // Submit to API
+    const response = await fetch('https://gfa-tech.com/afcfta-api/api/contact', {
+      method: 'POST',
+      headers: {
+        'Authorization': authHeader,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(contactData)
+    });
+    
+    // Parse response
+    const result = await response.json();
+    
+    if (!response.ok) {
+      throw new Error(result.message || 'Failed to send message');
+    }
+    
+    // Show success message
+    createNotification('Thank you for reaching out. Our team will review your request and contact you shortly.', false);
+    
+    // Reset form
+    form.reset();
+    
+  } catch (error) {
+    console.error('Error submitting contact form:', error);
+    createNotification(error.message || 'An error occurred while sending your message. Please try again later.', true);
+  } finally {
+    // Re-enable submit button
+    submitButton.disabled = false;
+    submitButton.innerHTML = 'Send Message';
+  }
+}
+
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
   // Add notification styles
   addNotificationStyles();
   
-  // Add form submit event listener
-  const form = document.getElementById('registrationForm');
-  if (form) {
-    form.onsubmit = submitForm;
+  // Add form submit event listeners
+  const registrationForm = document.getElementById('registrationForm');
+  if (registrationForm) {
+    registrationForm.onsubmit = submitForm;
+  }
+  
+  // Add contact form submit event listener
+  const contactForm = document.getElementById('contactForm');
+  if (contactForm) {
+    contactForm.onsubmit = submitContactForm;
   }
 });
 
