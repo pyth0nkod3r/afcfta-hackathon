@@ -375,7 +375,7 @@ function generateTeamMembers() {
         <option value="Saudi Arabian">Saudi Arabian</option>
         <option value="Senegalese">Senegalese</option>
         <option value="Serbian">Serbian</option>
-        <option value="Seychellois">Seychellois</option>
+        <option value="Seychelles">Seychelles</option>
         <option value="Sierra Leonean">Sierra Leonean</option>
         <option value="Singaporean">Singaporean</option>
         <option value="Slovak">Slovak</option>
@@ -432,230 +432,252 @@ function generateTeamMembers() {
   }
 }
 
-
-// Form submission handler
-document.addEventListener("DOMContentLoaded", function () {
-  const form = document.getElementById("registrationForm");
-  
-  /** 
-  // Add event listener for team size changes to generate team member fields
-  const teamSizeField = document.getElementById("teamSize");
-  if (teamSizeField) {
-    teamSizeField.addEventListener("change", generateTeamMembers);
-    // Initialize team members on page load
-    generateTeamMembers();
-  }
-  **/
-
-if (form) {
-  form.addEventListener("submit", function (event) {
-    event.preventDefault();
-
-    // Show loading state
-    const submitButton = form.querySelector('button[type="submit"]');
-    const originalButtonText = submitButton ? submitButton.innerHTML : "Submit";
-    if (submitButton) {
-      submitButton.disabled = true;
-      submitButton.innerHTML = "Submitting...";
+// Load credentials from secret.yml
+async function loadCredentials() {
+  try {
+    const response = await fetch('/secret.yml');
+    if (!response.ok) {
+      throw new Error('Failed to load credentials');
     }
-
-    // Remove any existing messages
-    const existingMessages = form.querySelectorAll(".form-message");
-    existingMessages.forEach((el) => el.remove());
-
-    // Create FormData object
-    const formData = new FormData(form);
-
-    // Convert FormData to JSON object with the correct field names
-    const formDataObj = {};
-    const teamMembers = [];
-
-    // Map form fields to expected API field names
-    formData.forEach((value, key) => {
-      // Handle team members data
-      if (key.startsWith("member") && key.match(/member(\d+)/)) {
-        const memberIndex = parseInt(key.match(/member(\d+)/)[1]) - 1;
-        const fieldName = key.replace(/member\d+/, "");
-
-        // Initialize team member object if it doesn't exist
-        if (!teamMembers[memberIndex]) {
-          teamMembers[memberIndex] = {};
+    const text = await response.text();
+    const credentials = {};
+    
+    // Simple YAML parsing
+    text.split('\n').forEach(line => {
+      if (line.includes(':')) {
+        const [key, value] = line.split(':').map(part => part.trim());
+        if (key && value && !key.startsWith('#')) {
+          credentials[key] = value;
         }
-
-        // Map field names to API expected format
-        const apiFieldMapping = {
-          Name: "teamMemberFullName",
-          Email: "teamMemberEmail",
-          Phone: "teamMemberPhone",
-          Role: "teamMemberRole",
-          LinkedIn: "teamMemberLinkedIn",
-          Country: "teamMemberCountry",
-          Nationality: "teamMemberNationality",
-          Age: "teamMemberAge",
-          Gender: "teamMemberGender",
-        };
-
-        // Set the value in the team member object
-        if (apiFieldMapping[fieldName]) {
-          teamMembers[memberIndex][apiFieldMapping[fieldName]] = value;
-        }
-      } else {
-        // Handle other form fields
-        const apiFieldMapping = {
-          teamName: "teamName",
-          teamSize: "teamSize",
-          leaderName: "teamLeaderFullName",
-          leaderEmail: "teamLeaderEmail",
-          leaderPhone: "teamLeaderPhone",
-          leaderLinkedIn: "teamLeaderLinkedIn",
-          leaderCountry: "teamLeaderCountry",
-          leaderNationality: "teamLeaderNationality",
-          leaderAge: "teamLeaderAge",
-          leaderGender: "teamLeaderGender",
-          projectTitle: "projectTitle",
-          ideaSummary: "ideaSummary",
-          problemSolving: "problemSolving",
-          technology: "technology",
-          alignment: "alignment",
-          hasPrototype: "hasPrototype",
-          prototypeURL: "prototypeURL",
-          projectRepo: "projectRepo",
-          heardAbout: "heardAbout",
-          hasParticipated: "hasParticipated",
-          pastHackathons: "pastHackathons",
-          availability: "availability",
-        };
-
-        // Use the mapping or the original key if no mapping exists
-        const apiKey = apiFieldMapping[key] || key;
-        formDataObj[apiKey] = value;
       }
     });
-
-    // Add team members to the form data object
-    if (teamMembers.length > 0) {
-      formDataObj.teamMembers = teamMembers;
-    }
-
-    // Remove client-side validation
-    console.log("Form data being sent:", formDataObj);
-
-    // Fetch credentials from secret.yml
-    fetch("/secret.yml")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to load authentication credentials");
-        }
-        return response.text();
-      })
-      .then((yamlText) => {
-        // Parse YAML content
-        const lines = yamlText.split("\n");
-        const credentials = {};
-
-        lines.forEach((line) => {
-          if (line.includes(":")) {
-            const [key, value] = line.split(":").map((part) => part.trim());
-            if (key && value) {
-              credentials[key] = value;
-            }
-          }
-        });
-
-        if (!credentials.username || !credentials.password) {
-          throw new Error("Authentication credentials not found");
-        }
-
-        // Create Basic Auth header
-        const authHeader =
-          "Basic " + btoa(credentials.username + ":" + credentials.password);
-
-        // Send data to API
-        return fetch("https://gfa-tech.com/afcfta-api/api/hackathon", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: authHeader,
-          },
-          body: JSON.stringify(formDataObj),
-        });
-      })
-      .then((response) => {
-        console.log("Response status:", response.status);
-
-        // Clone the response to read the body regardless of status
-        const clonedResponse = response.clone();
-
-        // Try to read the response body
-        return clonedResponse.json().then(errorData => {
-          if (!response.ok) {
-            throw { 
-              status: response.status,
-              data: errorData 
-            };
-          }
-          return response.json();
-        });
-      })
-      .then((data) => {
-        // Handle successful submission
-        console.log("Success data:", data);
-
-        // Create success message
-        const successDiv = document.createElement("div");
-        successDiv.className = "form-message success-message";
-        successDiv.style.color = "green";
-        successDiv.style.padding = "15px";
-        successDiv.style.marginBottom = "20px";
-        successDiv.style.backgroundColor = "#e8f5e9";
-        successDiv.style.borderRadius = "5px";
-        successDiv.innerHTML =
-          "<strong>Application submitted successfully!</strong><br>Thank you for your submission.";
-
-        form.prepend(successDiv);
-        successDiv.scrollIntoView({ behavior: "smooth" });
-
-        // Reset form
-        form.reset();
-
-        // Restore submit button
-        if (submitButton) {
-          submitButton.disabled = false;
-          submitButton.innerHTML = originalButtonText;
-        }
-      })
-      .catch((error) => {
-        // Handle errors
-        console.error("Error submitting form:", error);
-
-        // Create error message
-        const errorDiv = document.createElement("div");
-        errorDiv.className = "form-message error-message";
-        errorDiv.style.color = "red";
-        errorDiv.style.padding = "15px";
-        errorDiv.style.marginBottom = "20px";
-        errorDiv.style.backgroundColor = "#ffebee";
-        errorDiv.style.borderRadius = "5px";
-
-        if (error.data?.messages) {
-          errorDiv.innerHTML = "<strong>Validation errors:</strong><br>" + 
-            Object.entries(error.data.messages)
-              .map(([field, message]) => `- ${field}: ${message}`)
-              .join("<br>");
-        } else {
-          errorDiv.innerHTML = "<strong>Error submitting application:</strong><br>" + 
-            (error.message || "Please check your network connection and try again");
-        }
-
-        form.prepend(errorDiv);
-        errorDiv.scrollIntoView({ behavior: "smooth" });
-
-        // Restore submit button
-        if (submitButton) {
-          submitButton.disabled = false;
-          submitButton.innerHTML = originalButtonText;
-        }
-      });
-  });
+    
+    return credentials;
+  } catch (error) {
+    console.error('Error loading credentials:', error);
+    return { username: '', password: '' };
+  }
 }
+
+// Format form data for API submission
+function formatFormData(form) {
+  const formData = new FormData();
+  const teamSize = form.teamSize.value;
+  
+  // Add team info
+  formData.append('teamName', form.teamName.value);
+  formData.append('teamSize', teamSize);
+  
+  // Add team leader info
+  formData.append('teamLeaderFullName', form.teamLeaderFullName.value);
+  formData.append('teamLeaderEmail', form.teamLeaderEmail.value);
+  formData.append('teamLeaderPhone', form.teamLeaderPhone.value);
+  formData.append('teamLeaderLinkedIn', form.teamLeaderLinkedIn.value || '');
+  formData.append('teamLeaderCountry', form.teamLeaderCountry.value);
+  formData.append('teamLeaderNationality', form.teamLeaderNationality.value);
+  formData.append('teamLeaderAge', form.teamLeaderAge.value);
+  formData.append('teamLeaderGender', form.teamLeaderGender.value);
+  
+  // Add team members
+  for (let i = 1; i < parseInt(teamSize); i++) {
+    formData.append(`teamMembers[${i-1}][teamMemberFullName]`, form[`member${i}Name`].value);
+    formData.append(`teamMembers[${i-1}][teamMemberEmail]`, form[`member${i}Email`].value);
+    formData.append(`teamMembers[${i-1}][teamMemberPhone]`, form[`member${i}Phone`].value);
+    formData.append(`teamMembers[${i-1}][teamMemberRole]`, form[`member${i}Role`].value);
+    formData.append(`teamMembers[${i-1}][teamMemberCountry]`, form[`member${i}Country`].value);
+    formData.append(`teamMembers[${i-1}][teamMemberLinkedIn]`, form[`member${i}LinkedIn`].value || '');
+    formData.append(`teamMembers[${i-1}][teamMemberNationality]`, form[`member${i}Nationality`].value);
+    formData.append(`teamMembers[${i-1}][teamMemberAge]`, form[`member${i}Age`].value);
+    formData.append(`teamMembers[${i-1}][teamMemberGender]`, form[`member${i}Gender`].value);
+  }
+  
+  // Add project details
+  formData.append('projectTitle', form.projectTitle.value);
+  formData.append('ideaSummary', form.ideaSummary.value);
+  formData.append('problemSolving', form.problemSolving.value);
+  formData.append('technology', form.technology.value);
+  formData.append('alignment', form.alignment.value);
+  formData.append('hasPrototype', form.hasPrototype.value);
+  formData.append('prototypeURL', form.prototypeURL.value || '');
+  formData.append('projectRepo', form.projectRepo.value || '');
+  formData.append('heardAbout', form.heardAbout.value);
+  formData.append('hasParticipated', form.hasParticipated.value);
+  formData.append('pastHackathons', form.pastHackathons.value || '');
+  formData.append('availability', form.availability.value);
+  
+  // Add challenge areas
+  const challengeAreas = document.querySelectorAll('input[name^="challengeAreas"]:checked');
+  challengeAreas.forEach((checkbox, index) => {
+    formData.append(`challengeAreas[${index}]`, checkbox.parentElement.textContent.trim());
+  });
+  
+  // Add declarations
+  const declarations = document.querySelectorAll('input[name^="declarations"]:checked');
+  declarations.forEach((checkbox, index) => {
+    formData.append(`declarations[${index}]`, checkbox.parentElement.textContent.trim());
+  });
+  
+  // Add file upload if present
+  if (form.fileUpload.files.length > 0) {
+    formData.append('fileUpload', form.fileUpload.files[0]);
+  }
+  
+  return formData;
+}
+
+// Create notification element
+function createNotification(message, isError = false) {
+  const notification = document.createElement('div');
+  notification.className = isError ? 'notification error' : 'notification success';
+  notification.innerHTML = `
+    <div class="notification-content">
+      <i class="fas ${isError ? 'fa-exclamation-circle' : 'fa-check-circle'}"></i>
+      <p>${message}</p>
+    </div>
+    <button class="close-notification"><i class="fas fa-times"></i></button>
+  `;
+  
+  document.body.appendChild(notification);
+  
+  // Add event listener to close button
+  notification.querySelector('.close-notification').addEventListener('click', () => {
+    notification.remove();
+  });
+  
+  // Auto-remove after 5 seconds
+  setTimeout(() => {
+    if (document.body.contains(notification)) {
+      notification.remove();
+    }
+  }, 5000);
+  
+  return notification;
+}
+
+// Submit form to API
+async function submitForm(event) {
+  event.preventDefault();
+  
+  const form = event.target;
+  const submitButton = form.querySelector('button[type="submit"]');
+  submitButton.disabled = true;
+  submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+  
+  try {
+    // Load credentials
+    const credentials = await loadCredentials();
+    
+    // Format form data
+    const formData = formatFormData(form);
+    
+    // Create authorization header
+    const authHeader = 'Basic ' + btoa(`${credentials.username}:${credentials.password}`);
+    
+    // Submit to API
+    const response = await fetch('https://gfa-tech.com/afcfta-api/api/hackathon', {
+      method: 'POST',
+      headers: {
+        'Authorization': authHeader
+      },
+      body: formData
+    });
+    
+    // Parse response
+    const result = await response.json();
+    
+    if (!response.ok) {
+      throw new Error(result.message || 'Failed to submit application');
+    }
+    
+    // Show success message
+    createNotification('Your application has been submitted successfully! We will contact you soon.', false);
+    
+    // Reset form
+    form.reset();
+    document.getElementById('teamMembersContainer').innerHTML = '';
+    
+  } catch (error) {
+    console.error('Error submitting form:', error);
+    createNotification(error.message || 'An error occurred while submitting your application. Please try again later.', true);
+  } finally {
+    // Re-enable submit button
+    submitButton.disabled = false;
+    submitButton.innerHTML = 'Apply Now';
+  }
+}
+
+// Add CSS for notifications
+function addNotificationStyles() {
+  const style = document.createElement('style');
+  style.textContent = `
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 15px 20px;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 400px;
+      z-index: 9999;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      animation: slideIn 0.3s ease-out forwards;
+    }
+    
+    .notification-content {
+      display: flex;
+      align-items: center;
+    }
+    
+    .notification-content i {
+      margin-right: 10px;
+      font-size: 20px;
+    }
+    
+    .notification.success {
+      background-color: #d4edda;
+      color: #155724;
+      border-left: 4px solid #28a745;
+    }
+    
+    .notification.error {
+      background-color: #f8d7da;
+      color: #721c24;
+      border-left: 4px solid #dc3545;
+    }
+    
+    .close-notification {
+      background: none;
+      border: none;
+      color: inherit;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+    
+    @keyframes slideIn {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+  `;
+  document.head.appendChild(style);
+}
+
+// Initialize when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+  // Add notification styles
+  addNotificationStyles();
+  
+  // Add form submit event listener
+  const form = document.getElementById('registrationForm');
+  if (form) {
+    form.onsubmit = submitForm;
+  }
 });
+
