@@ -435,27 +435,27 @@ function generateTeamMembers() {
 // Load credentials from secret.yml
 async function loadCredentials() {
   try {
-    const response = await fetch('/secret.yml');
+    const response = await fetch("/secret.yml");
     if (!response.ok) {
-      throw new Error('Failed to load credentials');
+      throw new Error("Failed to load credentials");
     }
     const text = await response.text();
     const credentials = {};
-    
+
     // Simple YAML parsing
-    text.split('\n').forEach(line => {
-      if (line.includes(':')) {
-        const [key, value] = line.split(':').map(part => part.trim());
-        if (key && value && !key.startsWith('#')) {
+    text.split("\n").forEach((line) => {
+      if (line.includes(":")) {
+        const [key, value] = line.split(":").map((part) => part.trim());
+        if (key && value && !key.startsWith("#")) {
           credentials[key] = value;
         }
       }
     });
-    
+
     return credentials;
   } catch (error) {
-    console.error('Error loading credentials:', error);
-    return { username: '', password: '' };
+    console.error("Error loading credentials:", error);
+    return { username: "", password: "" };
   }
 }
 
@@ -463,152 +463,206 @@ async function loadCredentials() {
 function formatFormData(form) {
   const formData = new FormData();
   const teamSize = form.teamSize.value;
-  
+
   // Add team info
-  formData.append('teamName', form.teamName.value);
-  formData.append('teamSize', teamSize);
-  
+  formData.append("teamName", form.teamName.value);
+  formData.append("teamSize", teamSize);
+
   // Add team leader info
-  formData.append('teamLeaderFullName', form.teamLeaderFullName.value);
-  formData.append('teamLeaderEmail', form.teamLeaderEmail.value);
-  formData.append('teamLeaderPhone', form.teamLeaderPhone.value);
-  formData.append('teamLeaderLinkedIn', form.teamLeaderLinkedIn.value || '');
-  formData.append('teamLeaderCountry', form.teamLeaderCountry.value);
-  formData.append('teamLeaderNationality', form.teamLeaderNationality.value);
-  formData.append('teamLeaderAge', form.teamLeaderAge.value);
-  formData.append('teamLeaderGender', form.teamLeaderGender.value);
-  
+  formData.append("teamLeaderFullName", form.teamLeaderFullName.value);
+  formData.append("teamLeaderEmail", form.teamLeaderEmail.value);
+  formData.append("teamLeaderPhone", form.teamLeaderPhone.value);
+  formData.append("teamLeaderLinkedIn", form.teamLeaderLinkedIn.value || "");
+  formData.append("teamLeaderCountry", form.teamLeaderCountry.value);
+  formData.append("teamLeaderNationality", form.teamLeaderNationality.value);
+  formData.append("teamLeaderAge", form.teamLeaderAge.value);
+  formData.append("teamLeaderGender", form.teamLeaderGender.value);
+
   // Add team members
   for (let i = 1; i < parseInt(teamSize); i++) {
-    formData.append(`teamMembers[${i-1}][teamMemberFullName]`, form[`member${i}Name`].value);
-    formData.append(`teamMembers[${i-1}][teamMemberEmail]`, form[`member${i}Email`].value);
-    formData.append(`teamMembers[${i-1}][teamMemberPhone]`, form[`member${i}Phone`].value);
-    formData.append(`teamMembers[${i-1}][teamMemberRole]`, form[`member${i}Role`].value);
-    formData.append(`teamMembers[${i-1}][teamMemberCountry]`, form[`member${i}Country`].value);
-    formData.append(`teamMembers[${i-1}][teamMemberLinkedIn]`, form[`member${i}LinkedIn`].value || '');
-    formData.append(`teamMembers[${i-1}][teamMemberNationality]`, form[`member${i}Nationality`].value);
-    formData.append(`teamMembers[${i-1}][teamMemberAge]`, form[`member${i}Age`].value);
-    formData.append(`teamMembers[${i-1}][teamMemberGender]`, form[`member${i}Gender`].value);
+    formData.append(
+      `teamMembers[${i - 1}][teamMemberFullName]`,
+      form[`member${i}Name`].value
+    );
+    formData.append(
+      `teamMembers[${i - 1}][teamMemberEmail]`,
+      form[`member${i}Email`].value
+    );
+    formData.append(
+      `teamMembers[${i - 1}][teamMemberPhone]`,
+      form[`member${i}Phone`].value
+    );
+    formData.append(
+      `teamMembers[${i - 1}][teamMemberRole]`,
+      form[`member${i}Role`].value
+    );
+    formData.append(
+      `teamMembers[${i - 1}][teamMemberCountry]`,
+      form[`member${i}Country`].value
+    );
+    formData.append(
+      `teamMembers[${i - 1}][teamMemberLinkedIn]`,
+      form[`member${i}LinkedIn`].value || ""
+    );
+    formData.append(
+      `teamMembers[${i - 1}][teamMemberNationality]`,
+      form[`member${i}Nationality`].value
+    );
+    formData.append(
+      `teamMembers[${i - 1}][teamMemberAge]`,
+      form[`member${i}Age`].value
+    );
+    formData.append(
+      `teamMembers[${i - 1}][teamMemberGender]`,
+      form[`member${i}Gender`].value
+    );
   }
-  
+
   // Add project details
-  formData.append('projectTitle', form.projectTitle.value);
-  formData.append('ideaSummary', form.ideaSummary.value);
-  formData.append('problemSolving', form.problemSolving.value);
-  formData.append('technology', form.technology.value);
-  formData.append('alignment', form.alignment.value);
-  formData.append('hasPrototype', form.hasPrototype.value);
-  formData.append('prototypeURL', form.prototypeURL.value || '');
-  formData.append('projectRepo', form.projectRepo.value || '');
-  formData.append('heardAbout', form.heardAbout.value);
-  formData.append('hasParticipated', form.hasParticipated.value);
-  formData.append('pastHackathons', form.pastHackathons.value || '');
-  formData.append('availability', form.availability.value);
-  
+  formData.append("projectTitle", form.projectTitle.value);
+  formData.append("ideaSummary", form.ideaSummary.value);
+  formData.append("problemSolving", form.problemSolving.value);
+  formData.append("technology", form.technology.value);
+  formData.append("alignment", form.alignment.value);
+  formData.append("hasPrototype", form.hasPrototype.value);
+  formData.append("prototypeURL", form.prototypeURL.value || "");
+  formData.append("projectRepo", form.projectRepo.value || "");
+  formData.append("heardAbout", form.heardAbout.value);
+  formData.append("hasParticipated", form.hasParticipated.value);
+  formData.append("pastHackathons", form.pastHackathons.value || "");
+  formData.append("availability", form.availability.value);
+
   // Add challenge areas
-  const challengeAreas = document.querySelectorAll('input[name^="challengeAreas"]:checked');
+  const challengeAreas = document.querySelectorAll(
+    'input[name^="challengeAreas"]:checked'
+  );
   challengeAreas.forEach((checkbox, index) => {
-    formData.append(`challengeAreas[${index}]`, checkbox.parentElement.textContent.trim());
+    formData.append(
+      `challengeAreas[${index}]`,
+      checkbox.parentElement.textContent.trim()
+    );
   });
-  
+
   // Add declarations
-  const declarations = document.querySelectorAll('input[name^="declarations"]:checked');
+  const declarations = document.querySelectorAll(
+    'input[name^="declarations"]:checked'
+  );
   declarations.forEach((checkbox, index) => {
-    formData.append(`declarations[${index}]`, checkbox.parentElement.textContent.trim());
+    formData.append(
+      `declarations[${index}]`,
+      checkbox.parentElement.textContent.trim()
+    );
   });
-  
+
   // Add file upload if present
   if (form.fileUpload.files.length > 0) {
-    formData.append('fileUpload', form.fileUpload.files[0]);
+    formData.append("fileUpload", form.fileUpload.files[0]);
   }
-  
+
   return formData;
 }
 
 // Create notification element
 function createNotification(message, isError = false) {
-  const notification = document.createElement('div');
-  notification.className = isError ? 'notification error' : 'notification success';
+  const notification = document.createElement("div");
+  notification.className = isError
+    ? "notification error"
+    : "notification success";
   notification.innerHTML = `
     <div class="notification-content">
-      <i class="fas ${isError ? 'fa-exclamation-circle' : 'fa-check-circle'}"></i>
+      <i class="fas ${
+        isError ? "fa-exclamation-circle" : "fa-check-circle"
+      }"></i>
       <p>${message}</p>
     </div>
     <button class="close-notification"><i class="fas fa-times"></i></button>
   `;
-  
+
   document.body.appendChild(notification);
-  
+
   // Add event listener to close button
-  notification.querySelector('.close-notification').addEventListener('click', () => {
-    notification.remove();
-  });
-  
+  notification
+    .querySelector(".close-notification")
+    .addEventListener("click", () => {
+      notification.remove();
+    });
+
   // Auto-remove after 5 seconds
   setTimeout(() => {
     if (document.body.contains(notification)) {
       notification.remove();
     }
   }, 5000);
-  
+
   return notification;
 }
 
 // Submit form to API
 async function submitForm(event) {
   event.preventDefault();
-  
+
   const form = event.target;
   const submitButton = form.querySelector('button[type="submit"]');
   submitButton.disabled = true;
-  submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
-  
+  submitButton.innerHTML =
+    '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+
   try {
     // Load credentials
     const credentials = await loadCredentials();
-    
+
     // Format form data
     const formData = formatFormData(form);
-    
+
     // Create authorization header
-    const authHeader = 'Basic ' + btoa(`${credentials.username}:${credentials.password}`);
-    
+    const authHeader =
+      "Basic " + btoa(`${credentials.username}:${credentials.password}`);
+
     // Submit to API
-    const response = await fetch('https://gfa-tech.com/afcfta-api/api/hackathon', {
-      method: 'POST',
-      headers: {
-        'Authorization': authHeader
-      },
-      body: formData
-    });
-    
+    const response = await fetch(
+      "https://gfa-tech.com/afcfta-api/api/hackathon",
+      {
+        method: "POST",
+        headers: {
+          Authorization: authHeader,
+        },
+        body: formData,
+      }
+    );
+
     // Parse response
     const result = await response.json();
-    
+
     if (!response.ok) {
-      throw new Error(result.message || 'Failed to submit application');
+      throw new Error(result.message || "Failed to submit application");
     }
-    
+
     // Show success message
-    createNotification('Your application has been submitted successfully! We will contact you soon.', false);
-    
+    createNotification(
+      "Your application has been submitted successfully! We will contact you soon.",
+      false
+    );
+
     // Reset form
     form.reset();
-    document.getElementById('teamMembersContainer').innerHTML = '';
-    
+    document.getElementById("teamMembersContainer").innerHTML = "";
   } catch (error) {
-    console.error('Error submitting form:', error);
-    createNotification(error.message || 'An error occurred while submitting your application. Please try again later.', true);
+    console.error("Error submitting form:", error);
+    createNotification(
+      error.message ||
+        "An error occurred while submitting your application. Please try again later.",
+      true
+    );
   } finally {
     // Re-enable submit button
     submitButton.disabled = false;
-    submitButton.innerHTML = 'Apply Now';
+    submitButton.innerHTML = "Apply Now";
   }
 }
 
 // Add CSS for notifications
 function addNotificationStyles() {
-  const style = document.createElement('style');
+  const style = document.createElement("style");
   style.textContent = `
     .notification {
       position: fixed;
@@ -672,77 +726,86 @@ function addNotificationStyles() {
 // Contact form submission handler
 async function submitContactForm(event) {
   event.preventDefault();
-  
+
   const form = event.target;
   const submitButton = form.querySelector('button[type="submit"]');
   submitButton.disabled = true;
   submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
-  
+
   try {
     // Load credentials
     const credentials = await loadCredentials();
-    
+
     // Format contact form data as JSON
     const contactData = {
       fullName: form.fullName.value,
       phoneNumber: form.phoneNumber.value,
       emailAddress: form.emailAddress.value,
-      message: form.message.value
+      message: form.message.value,
     };
-    
+
     // Create authorization header
-    const authHeader = 'Basic ' + btoa(`${credentials.username}:${credentials.password}`);
-    
+    const authHeader =
+      "Basic " + btoa(`${credentials.username}:${credentials.password}`);
+
     // Submit to API
-    const response = await fetch('https://gfa-tech.com/afcfta-api/api/contact', {
-      method: 'POST',
-      headers: {
-        'Authorization': authHeader,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(contactData)
-    });
-    
+    const response = await fetch(
+      "https://gfa-tech.com/afcfta-api/api/contact",
+      {
+        method: "POST",
+        headers: {
+          Authorization: authHeader,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(contactData),
+      }
+    );
+
     // Parse response
     const result = await response.json();
-    
+
     if (!response.ok) {
+      if (result.messages && typeof result.messages === "object") {
+        const errorMessages = Object.values(result.messages).join("<br><br>");
+        throw new Error(errorMessages);
+      }
       throw new Error(
-        result.message || result.error || "An error occured. Message sending failed"
+        result.messages || "An error occured. Message sending failed"
       );
     }
-    
+
     // Show success message
-    createNotification('Thank you for reaching out. Our team will review your request and contact you shortly.', false);
-    
+    createNotification(
+      "Thank you for reaching out. Our team will review your request and contact you shortly.",
+      false
+    );
+
     // Reset form
     form.reset();
-    
   } catch (error) {
-    console.error('Error submitting contact form:', error);
-    createNotification(error.message || 'An error occurred while sending your message. Please try again later.', true);
+    console.error("Error submitting contact form:", error);
+    createNotification(error.message, true);
   } finally {
     // Re-enable submit button
     submitButton.disabled = false;
-    submitButton.innerHTML = 'Send Message';
+    submitButton.innerHTML = "Send Message";
   }
 }
 
 // Initialize when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener("DOMContentLoaded", function () {
   // Add notification styles
   addNotificationStyles();
-  
+
   // Add form submit event listeners
-  const registrationForm = document.getElementById('registrationForm');
+  const registrationForm = document.getElementById("registrationForm");
   if (registrationForm) {
     registrationForm.onsubmit = submitForm;
   }
-  
+
   // Add contact form submit event listener
-  const contactForm = document.getElementById('contactForm');
+  const contactForm = document.getElementById("contactForm");
   if (contactForm) {
     contactForm.onsubmit = submitContactForm;
   }
 });
-
